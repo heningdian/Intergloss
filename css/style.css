@@ -1,0 +1,104 @@
+/* Custom styles layered on top of Tailwind (CDN). Keep minimal: only what
+   Tailwind utility classes can't express cleanly (print rules, gloss grid,
+   small-caps rendering, focus rings for accessibility). */
+
+:root {
+  --gloss-gap-word: 1.35rem;
+  --gloss-gap-morpheme: 0.15rem;
+}
+
+body {
+  font-family: "Georgia", "Iowan Old Style", "Palatino Linotype", serif;
+}
+
+.ui-font {
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Gloss preview -------------------------------------------------------- */
+
+.gloss-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  row-gap: 0.65rem;
+  column-gap: var(--gloss-gap-word);
+}
+
+.gloss-word {
+  display: flex;
+  align-items: flex-end;
+}
+
+.gloss-morpheme {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.gloss-morpheme + .gloss-morpheme::before {
+  content: "";
+}
+
+.gloss-hyphen {
+  align-self: flex-end;
+  padding: 0 0.05rem 0.05rem;
+  color: inherit;
+  opacity: 0.75;
+}
+
+.gloss-text-row {
+  white-space: pre;
+  font-style: italic;
+  line-height: 1.35;
+}
+
+.gloss-abbr-row {
+  white-space: pre;
+  font-variant: small-caps;
+  font-style: normal;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+}
+
+.gloss-abbr-row .lex {
+  font-variant: normal;
+}
+
+.gloss-translation {
+  font-style: normal;
+}
+
+/* Focus visibility for keyboard users */
+:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Print / Save-as-PDF ---------------------------------------------------- */
+@media print {
+  @page {
+    margin: 2cm;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #print-area,
+  #print-area * {
+    visibility: visible;
+  }
+
+  #print-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
