@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Interlinear Gloss Generator</title>
+<meta name="description" content="A free, standalone, client-side tool for building Leipzig-style interlinear morpheme glosses and exporting them to HTML, LaTeX, or Word." />
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✒️</text></svg>" />
+</head>
+<body class="ui-font bg-gray-50 text-gray-900 min-h-screen">
+
+<header class="border-b border-gray-200 bg-white no-print">
+  <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between flex-wrap gap-2">
+    <div>
+      <h1 class="text-xl font-semibold tracking-tight">Interlinear Gloss Generator</h1>
+      <p class="text-sm text-gray-500">Leipzig-style morpheme glossing, formatted and exported entirely in your browser.</p>
+    </div>
+    <button id="toggle-library" type="button"
+      class="text-sm px-3 py-1.5 rounded-md border border-gray-300 hover:bg-gray-100 focus:outline-none">
+      Templates &amp; Recent
+    </button>
+  </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-5 gap-6">
+
+  <!-- Left: input / editor -->
+  <section class="lg:col-span-3 space-y-6 no-print">
+
+    <!-- Step 1: sentence -->
+    <div class="bg-white rounded-lg border border-gray-200 p-4">
+      <h2 class="font-medium mb-2">1. Sentence</h2>
+      <label for="sentence-input" class="sr-only">Sentence in the target language</label>
+      <textarea id="sentence-input" rows="2"
+        class="w-full rounded-md border border-gray-300 px-3 py-2 text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        placeholder="Type the sentence in the target language, e.g. Bapak-ku sedang membaca-nya"></textarea>
+      <div class="mt-2 flex items-center gap-3">
+        <button id="split-words-btn" type="button"
+          class="text-sm px-3 py-1.5 rounded-md bg-blue-600 text-white hover:bg-blue-700 focus:outline-none">
+          Split into words →
+        </button>
+        <span class="text-xs text-gray-500">Words are split on whitespace. You can re-split at any time.</span>
+      </div>
+    </div>
+
+    <!-- Step 2: morpheme segmentation + glossing -->
+    <div class="bg-white rounded-lg border border-gray-200 p-4">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="font-medium">2. Segment morphemes &amp; add glosses</h2>
+        <button id="add-word-btn" type="button"
+          class="text-xs px-2 py-1 rounded-md border border-gray-300 hover:bg-gray-100">+ Add word</button>
+      </div>
+      <p class="text-xs text-gray-500 mb-3">
+        Use <code class="bg-gray-100 px-1 rounded">-</code> for affix boundaries and
+        <code class="bg-gray-100 px-1 rounded">=</code> for clitic boundaries inside a word
+        (e.g. <code class="bg-gray-100 px-1 rounded">baca=nya</code>). A gloss box appears under each morpheme;
+        type or pick a Leipzig abbreviation.
+      </p>
+      <div id="word-cards" class="space-y-3"></div>
+      <p id="word-cards-empty" class="text-sm text-gray-400 italic">No words yet — split a sentence above or add a word.</p>
+    </div>
+
+    <!-- Leipzig quick-select -->
+    <div class="bg-white rounded-lg border border-gray-200 p-4">
+      <div class="flex items-center justify-between">
+        <h2 class="font-medium">Leipzig abbreviations</h2>
+        <button id="toggle-abbr-panel" type="button" class="text-xs text-blue-600 hover:underline">show / hide</button>
+      </div>
+      <p class="text-xs text-gray-500 mt-1">
+        Click an abbreviation to insert it into the last focused gloss box (appended with a
+        <code class="bg-gray-100 px-1 rounded">.</code> if it already has content).
+      </p>
+      <div id="abbr-panel" class="mt-3 hidden">
+        <input id="abbr-filter" type="text" placeholder="Filter abbreviations…"
+          class="w-full mb-2 rounded-md border border-gray-300 px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+        <div id="abbr-grid" class="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto"></div>
+      </div>
+    </div>
+
+    <!-- Step 3: translation -->
+    <div class="bg-white rounded-lg border border-gray-200 p-4">
+      <h2 class="font-medium mb-2">3. Free translation</h2>
+      <label for="translation-input" class="sr-only">Free translation</label>
+      <input id="translation-input" type="text"
+        class="w-full rounded-md border border-gray-300 px-3 py-2 text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        placeholder="e.g. My father is reading it." />
+    </div>
+  </section>
+
+  <!-- Right: live preview + export -->
+  <section class="lg:col-span-2">
+    <div class="lg:sticky lg:top-6 space-y-4">
+      <div id="print-area" class="bg-white rounded-lg border border-gray-200 p-5">
+        <h2 class="font-medium mb-3 no-print text-gray-700">Live preview</h2>
+        <div id="preview-empty" class="text-sm text-gray-400 italic">Your gloss will appear here as you type.</div>
+        <div id="preview-gloss-line" class="gloss-line text-lg"></div>
+        <div id="preview-translation" class="gloss-translation mt-4 text-lg"></div>
+      </div>
+
+      <div class="bg-white rounded-lg border border-gray-200 p-4 no-print">
+        <h2 class="font-medium mb-3">Export</h2>
+        <div class="grid grid-cols-2 gap-2">
+          <button id="export-html-btn" type="button" class="text-sm px-3 py-2 rounded-md border border-gray-300 hover:bg-gray-100">Copy HTML snippet</button>
+          <button id="export-latex-btn" type="button" class="text-sm px-3 py-2 rounded-md border border-gray-300 hover:bg-gray-100">Copy LaTeX code</button>
+          <button id="export-docx-btn" type="button" class="text-sm px-3 py-2 rounded-md border border-gray-300 hover:bg-gray-100">Download .docx</button>
+          <button id="export-print-btn" type="button" class="text-sm px-3 py-2 rounded-md border border-gray-300 hover:bg-gray-100">Print / Save PDF</button>
+        </div>
+        <p id="export-status" class="text-xs text-gray-500 mt-2 h-4" aria-live="polite"></p>
+      </div>
+
+      <div class="bg-white rounded-lg border border-gray-200 p-4 no-print">
+        <h2 class="font-medium mb-2">Save this gloss</h2>
+        <div class="flex gap-2">
+          <input id="template-name-input" type="text" placeholder="Template name…"
+            class="flex-1 rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+          <button id="save-template-btn" type="button"
+            class="text-sm px-3 py-1.5 rounded-md bg-gray-800 text-white hover:bg-gray-900">Save</button>
+        </div>
+        <p class="text-xs text-gray-500 mt-1">Your work is also auto-saved as a draft in this browser.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Templates & Recent side panel -->
+<div id="library-overlay" class="fixed inset-0 bg-black/30 hidden z-40 no-print" aria-hidden="true"></div>
+<aside id="library-panel"
+  class="fixed top-0 right-0 h-full w-full sm:w-96 bg-white shadow-xl translate-x-full transition-transform duration-200 z-50 no-print flex flex-col"
+  aria-label="Saved templates and recent glosses">
+  <div class="flex items-center justify-between p-4 border-b border-gray-200">
+    <h2 class="font-medium">Templates &amp; Recent</h2>
+    <button id="close-library-btn" type="button" class="text-gray-500 hover:text-gray-800 text-xl leading-none">&times;</button>
+  </div>
+  <div class="flex border-b border-gray-200 text-sm">
+    <button id="tab-templates" class="flex-1 py-2 font-medium border-b-2 border-blue-600 text-blue-700">Templates</button>
+    <button id="tab-recent" class="flex-1 py-2 font-medium border-b-2 border-transparent text-gray-500">Recent</button>
+  </div>
+  <div class="flex-1 overflow-y-auto p-3">
+    <ul id="templates-list" class="space-y-2"></ul>
+    <ul id="recent-list" class="space-y-2 hidden"></ul>
+  </div>
+</aside>
+
+<footer class="max-w-6xl mx-auto px-4 py-8 text-xs text-gray-400 no-print">
+  Runs entirely in your browser — no data is sent to a server. Glossing conventions follow the
+  <a class="underline" href="https://www.eva.mpg.de/lingua/resources/glossing-rules.php" target="_blank" rel="noopener noreferrer">Leipzig Glossing Rules</a>.
+</footer>
+
+<datalist id="leipzig-datalist"></datalist>
+
+<script src="js/leipzig-abbreviations.js"></script>
+<script src="js/zip-writer.js"></script>
+<script src="js/docx-export.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
