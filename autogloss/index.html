@@ -3,26 +3,27 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Interlinear Gloss Generator</title>
-<meta name="description" content="A free, standalone, client-side tool for building Leipzig-style interlinear morpheme glosses and exporting them to HTML, LaTeX, or Word." />
+<title>Autogloss — AI-assisted Interlinear Glossing</title>
+<meta name="description" content="Autogloss drafts a Leipzig-style interlinear gloss with Google Gemini using your own API key, then lets you correct it and export to HTML, LaTeX, or Word." />
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="css/style.css" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✒️</text></svg>" />
+<link rel="stylesheet" href="../css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>" />
+<script>window.GLOSS_NAMESPACE = "autogloss";</script>
 </head>
 <body class="ui-font bg-gray-50 text-gray-900 min-h-screen">
 
 <header class="border-b border-gray-200 bg-white no-print">
   <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between flex-wrap gap-2">
     <div>
-      <h1 class="text-xl font-semibold tracking-tight">Interlinear Gloss Generator</h1>
-      <p class="text-sm text-gray-500">Leipzig-style morpheme glossing, formatted and exported entirely in your browser.</p>
+      <h1 class="text-xl font-semibold tracking-tight">Autogloss <span class="align-middle text-xs font-normal text-white bg-violet-600 rounded px-1.5 py-0.5 ml-1">AI</span></h1>
+      <p class="text-sm text-gray-500">Gemini drafts the gloss, you correct it. Bring your own API key.</p>
     </div>
     <div class="flex items-center gap-2">
-      <a href="autogloss/index.html"
-        class="text-sm px-3 py-1.5 rounded-md border border-violet-300 text-violet-700 hover:bg-violet-50 focus:outline-none">
-        ✨ Try Autogloss (AI)
+      <a href="../index.html"
+        class="text-sm px-3 py-1.5 rounded-md border border-gray-300 hover:bg-gray-100 focus:outline-none">
+        Manual version
       </a>
-      <a href="help.html"
+      <a href="../help.html"
         class="text-sm px-3 py-1.5 rounded-md border border-gray-300 hover:bg-gray-100 focus:outline-none">
         Help
       </a>
@@ -46,12 +47,72 @@
       <textarea id="sentence-input" rows="2"
         class="w-full rounded-md border border-gray-300 px-3 py-2 text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         placeholder="Type the sentence in the target language, e.g. Bapak-ku sedang membaca-nya"></textarea>
-      <div class="mt-2 flex items-center gap-3">
+      <div class="mt-2 flex items-center gap-3 flex-wrap">
         <button id="split-words-btn" type="button"
           class="text-sm px-3 py-1.5 rounded-md bg-blue-600 text-white hover:bg-blue-700 focus:outline-none">
           Split into words →
         </button>
-        <span class="text-xs text-gray-500">Words are split on whitespace. You can re-split at any time.</span>
+        <span class="text-xs text-gray-500">Split manually, or let Gemini draft the whole gloss below.</span>
+      </div>
+    </div>
+
+    <!-- AI assist -->
+    <div class="bg-white rounded-lg border-2 border-violet-200 p-4">
+      <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
+        <h2 class="font-medium">✨ Auto-gloss with Gemini</h2>
+        <button id="key-settings-toggle" type="button" class="text-xs text-violet-700 hover:underline">API key settings</button>
+      </div>
+
+      <!-- Key setup (shown until a key is saved) -->
+      <div id="key-setup" class="hidden">
+        <p class="text-xs text-gray-600 mb-2 leading-relaxed">
+          Autogloss has no server, so it uses <strong>your</strong> Google Gemini API key. Create a free one at
+          <a class="underline text-violet-700" href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer">Google AI Studio</a>,
+          then paste it below. It is stored only in this browser and sent only to Google.
+        </p>
+        <div class="flex gap-2 flex-wrap">
+          <label for="api-key-input" class="sr-only">Gemini API key</label>
+          <input id="api-key-input" type="password" autocomplete="off" spellcheck="false"
+            placeholder="Paste your Gemini API key…"
+            class="flex-1 min-w-[12rem] rounded-md border border-gray-300 px-3 py-1.5 text-sm font-mono focus:ring-2 focus:ring-violet-500 focus:border-violet-500" />
+          <button id="save-key-btn" type="button"
+            class="text-sm px-3 py-1.5 rounded-md bg-violet-600 text-white hover:bg-violet-700">Save key</button>
+          <button id="remove-key-btn" type="button"
+            class="hidden text-sm px-3 py-1.5 rounded-md border border-gray-300 hover:bg-gray-100">Remove</button>
+        </div>
+        <p class="text-xs text-gray-500 mt-2 leading-relaxed">
+          Anyone with access to this browser profile could read the key. Don't use a shared or public computer, and
+          consider restricting the key to the Generative Language API in Google Cloud.
+        </p>
+      </div>
+
+      <!-- Run controls (shown once a key is saved) -->
+      <div id="ai-controls" class="hidden">
+        <div class="flex gap-2 flex-wrap items-end">
+          <div class="flex-1 min-w-[10rem]">
+            <label for="language-hint" class="block text-xs text-gray-500 mb-1">Language (optional, improves accuracy)</label>
+            <input id="language-hint" type="text" placeholder="e.g. Indonesian, Swahili, Turkish"
+              class="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:ring-2 focus:ring-violet-500 focus:border-violet-500" />
+          </div>
+          <div class="min-w-[10rem]">
+            <label for="model-select" class="block text-xs text-gray-500 mb-1">Model</label>
+            <select id="model-select"
+              class="w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm focus:ring-2 focus:ring-violet-500 focus:border-violet-500"></select>
+          </div>
+        </div>
+        <button id="autogloss-btn" type="button"
+          class="mt-3 w-full text-sm font-medium px-3 py-2.5 rounded-md bg-violet-600 text-white hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed">
+          ✨ Auto-gloss this sentence
+        </button>
+        <p id="ai-status" class="text-xs mt-2 min-h-[1rem] text-gray-500" aria-live="polite"></p>
+        <p id="ai-note" class="hidden text-xs mt-1 text-gray-600 italic"></p>
+      </div>
+
+      <div class="mt-3 bg-amber-50 border border-amber-200 rounded-md px-3 py-2">
+        <p class="text-xs text-amber-900 leading-relaxed">
+          <strong>Always check the output.</strong> AI glossing is reasonable for large, well-documented languages and
+          unreliable for under-resourced ones. Treat every result as a first draft to correct, not a finished analysis.
+        </p>
       </div>
     </div>
 
@@ -65,11 +126,10 @@
       <p class="text-xs text-gray-500 mb-3">
         Use <code class="bg-gray-100 px-1 rounded">-</code> for affix boundaries and
         <code class="bg-gray-100 px-1 rounded">=</code> for clitic boundaries inside a word
-        (e.g. <code class="bg-gray-100 px-1 rounded">baca=nya</code>). A gloss box appears under each morpheme;
-        type or pick a Leipzig abbreviation.
+        (e.g. <code class="bg-gray-100 px-1 rounded">baca=nya</code>). Edit anything Gemini got wrong.
       </p>
       <div id="word-cards" class="space-y-3"></div>
-      <p id="word-cards-empty" class="text-sm text-gray-400 italic">No words yet — split a sentence above or add a word.</p>
+      <p id="word-cards-empty" class="text-sm text-gray-400 italic">No words yet — auto-gloss a sentence above, or add a word.</p>
     </div>
 
     <!-- Leipzig quick-select -->
@@ -155,7 +215,8 @@
 
 <footer class="max-w-6xl mx-auto px-4 py-8 text-xs text-gray-400 no-print text-center space-y-3">
   <p>
-    Runs entirely in your browser — no data is sent to a server. Glossing conventions follow the
+    Your sentence is sent to Google only when you press “Auto-gloss”; everything else stays in your browser.
+    Glossing conventions follow the
     <a class="underline" href="https://www.eva.mpg.de/lingua/resources/glossing-rules.php" target="_blank" rel="noopener noreferrer">Leipzig Glossing Rules</a>.
   </p>
   <div>
@@ -169,9 +230,11 @@
 
 <datalist id="leipzig-datalist"></datalist>
 
-<script src="js/leipzig-abbreviations.js"></script>
-<script src="js/zip-writer.js"></script>
-<script src="js/docx-export.js"></script>
-<script src="js/app.js"></script>
+<script src="../js/leipzig-abbreviations.js"></script>
+<script src="../js/zip-writer.js"></script>
+<script src="../js/docx-export.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/gemini.js"></script>
+<script src="../js/autogloss.js"></script>
 </body>
 </html>

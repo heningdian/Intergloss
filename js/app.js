@@ -323,9 +323,12 @@
   // LocalStorage: draft autosave, templates, recent
   // ---------------------------------------------------------------------
 
-  const DRAFT_KEY = "intergloss:draft";
-  const TEMPLATES_KEY = "intergloss:templates";
-  const RECENT_KEY = "intergloss:recent";
+  // Twin apps (Intergloss / Autogloss) share this core but keep separate
+  // saved work, so the storage namespace is set by the page before load.
+  const NS = window.GLOSS_NAMESPACE || "intergloss";
+  const DRAFT_KEY = `${NS}:draft`;
+  const TEMPLATES_KEY = `${NS}:templates`;
+  const RECENT_KEY = `${NS}:recent`;
   const RECENT_LIMIT = 10;
 
   function serializeState() {
@@ -670,4 +673,18 @@
   loadDraft();
   renderLibrary();
   renderAll();
+
+  // Public hook used by the Autogloss twin to drop in an AI-generated draft.
+  // Intergloss itself never calls this.
+  window.GlossApp = {
+    parseSegText: (segText) => parseSegText(segText, null),
+    loadState: (snapshot) => {
+      loadStateFrom(snapshot);
+      saveDraftDebounced();
+    },
+    getState: serializeState,
+    setStatus: (message) => {
+      exportStatus.textContent = message || "";
+    },
+  };
 })();
