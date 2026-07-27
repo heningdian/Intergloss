@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Help &amp; Guide — Interlinear Gloss Generator</title>
+<meta name="description" content="A beginner-friendly guide to using Intergloss: segmenting words, glossing morphemes, and exporting to HTML, LaTeX, or Word." />
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✒️</text></svg>" />
+</head>
+<body class="ui-font bg-gray-50 text-gray-900 min-h-screen">
+
+<header class="border-b border-gray-200 bg-white">
+  <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between flex-wrap gap-2">
+    <div>
+      <h1 class="text-xl font-semibold tracking-tight">Help &amp; Guide</h1>
+      <p class="text-sm text-gray-500">A beginner-friendly walkthrough of Intergloss.</p>
+    </div>
+    <a href="index.html"
+      class="text-sm px-3 py-1.5 rounded-md border border-gray-300 hover:bg-gray-100 whitespace-nowrap">
+      ← Back to app
+    </a>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-4 py-8 space-y-10">
+
+  <section>
+    <h2 class="text-2xl font-semibold text-blue-900 mb-3">What is Intergloss?</h2>
+    <p class="mb-3 leading-relaxed">
+      Intergloss is a free, in-browser tool for creating <strong>interlinear glosses</strong> — the
+      line-by-line breakdown linguists use to show a sentence's original text, its morpheme-by-morpheme
+      meaning, and a free translation, all lined up underneath each other.
+    </p>
+    <p class="mb-4 leading-relaxed">A typical interlinear gloss looks like this:</p>
+    <img src="img/help/08-preview-zoom.png" alt="Example of an aligned interlinear gloss with source text, glosses, and translation" class="max-w-sm mx-auto rounded border border-gray-200" />
+    <p class="mt-4 leading-relaxed">
+      You don't need to know any linguistics jargon to get started — this guide walks through every
+      step, from typing a sentence to exporting a polished gloss for a paper, a slide, or a website.
+    </p>
+    <div class="mt-4 bg-blue-50 border border-blue-200 rounded-md p-4">
+      <p class="font-semibold text-blue-700 mb-1">No installation needed</p>
+      <p class="text-blue-950 text-sm leading-relaxed">
+        Intergloss runs entirely in your web browser. Nothing is installed, nothing is uploaded — your
+        sentence, glosses, and translations stay on your own computer.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="text-2xl font-semibold text-blue-900 mb-3">Step 1 — Type your sentence</h2>
+    <p class="mb-4 leading-relaxed">
+      Open the app and find the “1. Sentence” box at the top left. Type a sentence in the language you
+      want to gloss, in its normal spelling — you don't need to add any special marks yet.
+    </p>
+    <img src="img/help/02-sentence-typed.png" alt="Sentence input box with an example sentence typed in" class="w-full rounded border border-gray-200 mb-4" />
+    <p class="mb-4 leading-relaxed">
+      Then click the blue “Split into words →” button. Intergloss will break your sentence into one
+      editable card per word.
+    </p>
+    <img src="img/help/03-words-split.png" alt="The app after splitting a sentence into individual word cards" class="w-full rounded border border-gray-200" />
+    <div class="mt-4 bg-blue-50 border border-blue-200 rounded-md p-4">
+      <p class="font-semibold text-blue-700 mb-1">Tip</p>
+      <p class="text-blue-950 text-sm leading-relaxed">
+        Words are split wherever there's a space. If you change your mind about the sentence, edit the
+        text box and click “Split into words” again (it will ask before replacing any work you've
+        already done below).
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="text-2xl font-semibold text-blue-900 mb-3">Step 2 — Break words into morphemes</h2>
+    <p class="mb-3 leading-relaxed">
+      A <strong>morpheme</strong> is the smallest meaningful piece of a word — for example,
+      <em>cooked</em> has two: <em>cook</em> and <em>-ed</em>. Interlinear glosses label each of these
+      pieces separately, so the next step is marking where those pieces are inside each word.
+    </p>
+    <p class="mb-2 leading-relaxed">In each word card, edit the text box to add:</p>
+    <ul class="list-disc pl-6 space-y-1 mb-4">
+      <li><code class="bg-gray-100 px-1 rounded">-</code> between two parts joined tightly (an affix), like <code class="bg-gray-100 px-1 rounded">membaca-kan</code>.</li>
+      <li><code class="bg-gray-100 px-1 rounded">=</code> between a word and an attached clitic, like <code class="bg-gray-100 px-1 rounded">baca=nya</code>.</li>
+    </ul>
+    <p class="mb-4 leading-relaxed">
+      As soon as you add a dash or equals sign, Intergloss automatically creates a small gloss box
+      under each piece.
+    </p>
+    <img src="img/help/04-gloss-box-focused.png" alt="A gloss box appearing under a morpheme" class="w-full rounded border border-gray-200" />
+    <p class="text-xs text-gray-500 text-center mt-1 italic">A gloss box appears under every morpheme you mark.</p>
+
+    <h3 class="text-lg font-semibold mt-6 mb-2">Filling in each gloss box</h3>
+    <p class="mb-2 leading-relaxed">
+      Click into a gloss box and type a label for that piece of the word. Two conventions, both
+      supported automatically:
+    </p>
+    <ul class="list-disc pl-6 space-y-1 mb-4">
+      <li><strong>Lowercase word</strong> (e.g. <code class="bg-gray-100 px-1 rounded">read</code>, <code class="bg-gray-100 px-1 rounded">eat</code>, <code class="bg-gray-100 px-1 rounded">book</code>) — for a piece that translates to an ordinary word.</li>
+      <li><strong>Capitalized abbreviation</strong> (e.g. <code class="bg-gray-100 px-1 rounded">PST</code>, <code class="bg-gray-100 px-1 rounded">PL</code>, <code class="bg-gray-100 px-1 rounded">3SG</code>) — for a grammatical category. Intergloss automatically renders these in small capitals in the preview and exports, exactly as linguistics papers expect.</li>
+    </ul>
+    <img src="img/help/05-words-glossed.png" alt="Multiple words fully glossed, each morpheme lined up with its gloss" class="w-full rounded border border-gray-200" />
+    <p class="text-xs text-gray-500 text-center mt-1 italic">Each morpheme lines up with its own gloss underneath.</p>
+
+    <h3 class="text-lg font-semibold mt-6 mb-2">Not sure which abbreviation to use?</h3>
+    <p class="mb-4 leading-relaxed">
+      Click “show / hide” next to “Leipzig abbreviations” to open a searchable reference panel based
+      on the standard Leipzig Glossing Rules used in academic linguistics.
+    </p>
+    <img src="img/help/06-leipzig-panel.png" alt="The Leipzig abbreviations quick-select panel" class="w-full rounded border border-gray-200 mb-4" />
+    <ol class="list-decimal pl-6 space-y-1 mb-4">
+      <li>Click into the gloss box you want to fill.</li>
+      <li>Type to filter the list, e.g. “past” or “pl”.</li>
+      <li>Click an abbreviation to insert it. If the box already has text, it's appended with a dot, e.g. 3 → <code class="bg-gray-100 px-1 rounded">3.SG</code>.</li>
+    </ol>
+    <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
+      <p class="font-semibold text-blue-700 mb-1">Tip</p>
+      <p class="text-blue-950 text-sm leading-relaxed">
+        You can also just type abbreviations directly — a small on-screen autocomplete list will
+        suggest matches as you go, so the reference panel is optional.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="text-2xl font-semibold text-blue-900 mb-3">Step 3 — Add the free translation</h2>
+    <p class="mb-4 leading-relaxed">
+      Scroll to “3. Free translation” and type a natural, everyday translation of the whole sentence.
+      This becomes the third line of the gloss, shown in quotation marks.
+    </p>
+    <p class="mb-4 leading-relaxed">
+      Watch the “Live preview” panel on the right update as you type — this is exactly how your gloss
+      will look in every export.
+    </p>
+    <img src="img/help/07-full-with-preview.png" alt="The full app with a completed gloss shown in the live preview" class="w-full rounded border border-gray-200" />
+  </section>
+
+  <section>
+    <h2 class="text-2xl font-semibold text-blue-900 mb-3">Exporting your gloss</h2>
+    <p class="mb-4 leading-relaxed">
+      Once your gloss looks right in the preview, use the “Export” card to get it out of the browser:
+    </p>
+    <img src="img/help/09-export-buttons.png" alt="The four export buttons: Copy HTML snippet, Copy LaTeX code, Download .docx, Print / Save PDF" class="max-w-sm mx-auto rounded border border-gray-200 mb-4" />
+    <ul class="list-disc pl-6 space-y-2 mb-4">
+      <li><strong>Copy HTML snippet</strong> — copies ready-to-paste HTML (with inline styling) for a website, blog, or online document.</li>
+      <li><strong>Copy LaTeX code</strong> — copies a <code class="bg-gray-100 px-1 rounded">gb4e</code>-style <code class="bg-gray-100 px-1 rounded">\gll ... \glt</code> example block for academic papers written in LaTeX.</li>
+      <li><strong>Download .docx</strong> — downloads a Word document containing a clean, aligned gloss table you can drop into a paper or handout.</li>
+      <li><strong>Print / Save PDF</strong> — opens your browser's native print dialog with a clean layout (choose “Save as PDF” as the destination to get a PDF file instead of printing on paper).</li>
+    </ul>
+    <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
+      <p class="font-semibold text-blue-700 mb-1">Tip</p>
+      <p class="text-blue-950 text-sm leading-relaxed">
+        “Copy” buttons place the result on your clipboard — just paste (Ctrl/Cmd+V) into your document,
+        editor, or LaTeX file afterwards. A small status message under the buttons confirms what was
+        copied.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="text-2xl font-semibold text-blue-900 mb-3">Saving your work</h2>
+    <p class="mb-4 leading-relaxed">
+      Intergloss automatically saves a draft of what you're working on to your browser, so refreshing
+      the page won't lose your progress.
+    </p>
+    <p class="mb-4 leading-relaxed">
+      To keep a gloss for later — for example, a set of example sentences for a paper — give it a name
+      in the “Save this gloss” box and click <strong>Save</strong>. Open it again anytime from the
+      “Templates &amp; Recent” button in the top right.
+    </p>
+    <img src="img/help/10-templates-panel.png" alt="The Templates and Recent side panel listing a saved gloss" class="w-full rounded border border-gray-200 mb-4" />
+    <ul class="list-disc pl-6 space-y-1 mb-4">
+      <li><strong>Templates</strong> — glosses you named and saved on purpose.</li>
+      <li><strong>Recent</strong> — an automatic history of your last few glosses, in case you forgot to save.</li>
+    </ul>
+    <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
+      <p class="font-semibold text-blue-700 mb-1">Good to know</p>
+      <p class="text-blue-950 text-sm leading-relaxed">
+        Everything is stored locally in your browser (localStorage). It's tied to this browser on this
+        device — it won't follow you to a different computer, and clearing your browser data will
+        remove it.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="text-2xl font-semibold text-blue-900 mb-3">Frequently asked questions</h2>
+
+    <h3 class="text-lg font-semibold mt-4 mb-1">Do I need to install anything?</h3>
+    <p class="leading-relaxed">No. Intergloss is a website — open it in any modern browser (Chrome, Firefox, Safari, Edge) and start typing.</p>
+
+    <h3 class="text-lg font-semibold mt-4 mb-1">Is my data sent anywhere?</h3>
+    <p class="leading-relaxed">No. Every step — segmentation, glossing, formatting, and exporting — runs inside your own browser. Nothing is uploaded to a server.</p>
+
+    <h3 class="text-lg font-semibold mt-4 mb-1">My gloss isn't aligning correctly — what did I do wrong?</h3>
+    <p class="leading-relaxed">
+      Make sure every morpheme boundary uses a plain hyphen (<code class="bg-gray-100 px-1 rounded">-</code>) or equals sign
+      (<code class="bg-gray-100 px-1 rounded">=</code>), with no spaces around it. Each piece needs its own gloss box filled in
+      for the columns to line up cleanly.
+    </p>
+
+    <h3 class="text-lg font-semibold mt-4 mb-1">Can I gloss more than one sentence at a time?</h3>
+    <p class="leading-relaxed">
+      Work on one sentence at a time, save it as a template when you're done, then start a new
+      sentence. Your saved templates stay listed in the “Templates &amp; Recent” panel.
+    </p>
+
+    <h3 class="text-lg font-semibold mt-4 mb-1">Where can I learn more about glossing conventions?</h3>
+    <p class="leading-relaxed">
+      See the official
+      <a class="underline text-blue-600" href="https://www.eva.mpg.de/lingua/resources/glossing-rules.php" target="_blank" rel="noopener noreferrer">Leipzig Glossing Rules</a>,
+      which Intergloss's abbreviation list follows.
+    </p>
+  </section>
+
+  <div class="text-center pt-4">
+    <a href="index.html" class="inline-block text-sm px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">
+      ← Back to the app
+    </a>
+  </div>
+</main>
+
+<footer class="max-w-3xl mx-auto px-4 py-8 text-xs text-gray-400 text-center">
+  Happy glossing! · Intergloss runs entirely in your browser.
+</footer>
+
+</body>
+</html>
