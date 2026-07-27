@@ -84,10 +84,10 @@
 
       const header = document.createElement("div");
       header.className = "flex items-center justify-between mb-1.5";
-      header.innerHTML = `<span class="text-xs font-medium text-gray-500">Word ${wi + 1}</span>`;
+      header.innerHTML = `<span class="text-base font-medium text-gray-800">Word ${wi + 1}</span>`;
       const removeBtn = document.createElement("button");
       removeBtn.type = "button";
-      removeBtn.className = "text-xs text-gray-400 hover:text-red-600";
+      removeBtn.className = "text-base text-gray-800 hover:text-red-600";
       removeBtn.textContent = "Remove";
       removeBtn.setAttribute("aria-label", `Remove word ${wi + 1}`);
       removeBtn.addEventListener("click", () => {
@@ -102,7 +102,7 @@
       segInput.type = "text";
       segInput.value = word.segText;
       segInput.className =
-        "w-full rounded-md border border-gray-300 px-2 py-1.5 text-sm font-mono focus:ring-2 focus:ring-blue-500 focus:border-blue-500";
+        "w-full rounded-md border border-gray-300 px-2 py-1.5 text-base font-mono focus:ring-2 focus:ring-blue-500 focus:border-blue-500";
       segInput.setAttribute("aria-label", `Morpheme segmentation for word ${wi + 1}`);
       segInput.addEventListener("input", (e) => {
         word.segText = e.target.value;
@@ -129,7 +129,7 @@
       col.className = "flex flex-col items-center";
 
       const label = document.createElement("span");
-      label.className = "text-xs text-gray-400 mb-0.5 max-w-[6rem] truncate";
+      label.className = "text-base text-gray-800 mb-0.5 max-w-[8rem] truncate";
       label.textContent = m.text || "—";
       label.title = m.text;
       col.appendChild(label);
@@ -141,7 +141,7 @@
       glossInput.setAttribute("list", "leipzig-datalist");
       glossInput.setAttribute("aria-label", `Gloss for morpheme "${m.text}" in word ${wi + 1}`);
       glossInput.className =
-        "w-24 rounded-md border border-gray-300 px-2 py-1 text-sm text-center uppercase focus:ring-2 focus:ring-blue-500 focus:border-blue-500";
+        "w-32 rounded-md border border-gray-300 px-2 py-1 text-base text-center uppercase focus:ring-2 focus:ring-blue-500 focus:border-blue-500";
       glossInput.addEventListener("focus", () => {
         lastFocusedGlossInput = glossInput;
       });
@@ -294,7 +294,7 @@
       .map(
         (a) =>
           `<button type="button" data-abbr="${escapeHtml(a.abbr)}" title="${escapeHtml(a.desc)}"
-            class="abbr-chip text-xs px-2 py-1 rounded border border-gray-300 hover:bg-blue-50 hover:border-blue-400">${escapeHtml(a.abbr)}</button>`
+            class="abbr-chip text-base px-2 py-1 rounded border border-gray-300 hover:bg-blue-50 hover:border-blue-400">${escapeHtml(a.abbr)}</button>`
       )
       .join("");
   }
@@ -442,17 +442,17 @@
           (t) => `
         <li class="border border-gray-200 rounded-md p-2" data-id="${t.id}">
           <div class="flex items-center justify-between gap-2">
-            <span class="text-sm font-medium truncate">${escapeHtml(t.name)}</span>
+            <span class="text-base font-medium truncate">${escapeHtml(t.name)}</span>
             <div class="flex gap-2 shrink-0">
-              <button data-action="load" data-key="templates" data-id="${t.id}" class="text-xs text-blue-600 hover:underline">Load</button>
-              <button data-action="delete" data-key="templates" data-id="${t.id}" class="text-xs text-red-500 hover:underline">Delete</button>
+              <button data-action="load" data-key="templates" data-id="${t.id}" class="text-base text-blue-600 hover:underline">Load</button>
+              <button data-action="delete" data-key="templates" data-id="${t.id}" class="text-base text-red-500 hover:underline">Delete</button>
             </div>
           </div>
-          <div class="text-xs text-gray-500 mt-0.5">${escapeHtml(summarize(t.data))}</div>
-          <div class="text-[11px] text-gray-400 mt-0.5">${formatTimestamp(t.savedAt)}</div>
+          <div class="text-base text-gray-800 mt-0.5">${escapeHtml(summarize(t.data))}</div>
+          <div class="text-base text-gray-800 mt-0.5">${formatTimestamp(t.savedAt)}</div>
         </li>`
         )
-        .join("") || `<li class="text-sm text-gray-400 italic">No saved templates yet.</li>`;
+        .join("") || `<li class="text-base text-gray-800 italic">No saved templates yet.</li>`;
 
     el("recent-list").innerHTML =
       recent
@@ -460,16 +460,16 @@
           (r) => `
         <li class="border border-gray-200 rounded-md p-2" data-id="${r.id}">
           <div class="flex items-center justify-between gap-2">
-            <span class="text-xs text-gray-500">${formatTimestamp(r.savedAt)}</span>
+            <span class="text-base text-gray-800">${formatTimestamp(r.savedAt)}</span>
             <div class="flex gap-2 shrink-0">
-              <button data-action="load" data-key="recent" data-id="${r.id}" class="text-xs text-blue-600 hover:underline">Load</button>
-              <button data-action="delete" data-key="recent" data-id="${r.id}" class="text-xs text-red-500 hover:underline">Delete</button>
+              <button data-action="load" data-key="recent" data-id="${r.id}" class="text-base text-blue-600 hover:underline">Load</button>
+              <button data-action="delete" data-key="recent" data-id="${r.id}" class="text-base text-red-500 hover:underline">Delete</button>
             </div>
           </div>
-          <div class="text-sm mt-0.5 truncate">${escapeHtml(summarize(r.data))}</div>
+          <div class="text-base mt-0.5 truncate">${escapeHtml(summarize(r.data))}</div>
         </li>`
         )
-        .join("") || `<li class="text-sm text-gray-400 italic">Nothing here yet — keep glossing.</li>`;
+        .join("") || `<li class="text-base text-gray-800 italic">Nothing here yet — keep glossing.</li>`;
   }
 
   document.getElementById("templates-list").addEventListener("click", handleLibraryClick);
@@ -527,11 +527,11 @@
     el("tab-templates").classList.toggle("border-blue-600", isTemplates);
     el("tab-templates").classList.toggle("text-blue-700", isTemplates);
     el("tab-templates").classList.toggle("border-transparent", !isTemplates);
-    el("tab-templates").classList.toggle("text-gray-500", !isTemplates);
+    el("tab-templates").classList.toggle("text-gray-800", !isTemplates);
     el("tab-recent").classList.toggle("border-blue-600", !isTemplates);
     el("tab-recent").classList.toggle("text-blue-700", !isTemplates);
     el("tab-recent").classList.toggle("border-transparent", isTemplates);
-    el("tab-recent").classList.toggle("text-gray-500", isTemplates);
+    el("tab-recent").classList.toggle("text-gray-800", isTemplates);
     el("templates-list").classList.toggle("hidden", !isTemplates);
     el("recent-list").classList.toggle("hidden", isTemplates);
   }

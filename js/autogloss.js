@@ -34,8 +34,8 @@
   function setStatus(message, tone = "muted") {
     aiStatus.textContent = message || "";
     aiStatus.className =
-      "text-xs mt-2 min-h-[1rem] " +
-      { muted: "text-gray-500", error: "text-red-600", success: "text-green-700" }[tone];
+      "text-base mt-2 min-h-[1.5rem] " +
+      { muted: "text-gray-800", error: "text-red-600", success: "text-green-700" }[tone];
   }
 
   function showNote(text) {
